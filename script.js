@@ -46,7 +46,7 @@ const display = document.querySelector('.display');
 const numberUpdateDisplay = function() {
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
-            display.textContent = button.textContent;
+            display.textContent = button.value;
         })
     })
 }
