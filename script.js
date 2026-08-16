@@ -2,6 +2,7 @@
 const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const display = document.querySelector('.display');
+const equalSign = document.querySelector('.equal');
 
 // variables of calculator operation
 let firstNumber = 0;
@@ -36,7 +37,7 @@ const operate = function(operator, num1, num2) {
         return add(num1, num2);
     } else if ( operator === '-' ) {
         return subtract(num1, num2);
-    } else if ( operator === '*') {
+    } else if ( operator === 'x') {
         return multiply(num1, num2);
     } else if ( operator === '/' ) {
         return divide(num1, num2);
@@ -47,6 +48,7 @@ const operate = function(operator, num1, num2) {
 
 
 
+// display numbers on the calculator screen
 const numberDisplay = function() {
     numberButtons.forEach(button => {
         // get the value of the button
@@ -64,16 +66,31 @@ const numberDisplay = function() {
     })
 }
 
-const operatorSign = function() {
+// get operator sign and store first number
+const getOperatorSign = function() {
     operatorButtons.forEach(button => {
         const operator = button.value;
         button.addEventListener('click', () => {
-            firstNumber = Number(currentInput);
+            firstNumber = numberInput(currentInput);
             currentOperator = operator;
             currentInput = '0';
             updateNumber();
         })
     })
+}
+
+// get equal sign and store second number
+const getEqualSign = function() {
+    equalSign.addEventListener('click', () => {
+        secondNumber = numberInput(currentInput);
+        currentInput = operate(currentOperator, firstNumber, secondNumber);
+        updateNumber();
+    })
+}
+
+const numberInput = function(number) {
+    const digits = number
+    return Number(digits);
 }
 
 const updateNumber = function() {
@@ -82,8 +99,5 @@ const updateNumber = function() {
 }
 
 numberDisplay();
-
-// console.log(add(1, 2))
-// console.log(subtract(1, 2))
-// console.log(multiply(1, 2))
-// console.log(divide(2, 4))
+getOperatorSign();
+getEqualSign();
