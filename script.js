@@ -57,10 +57,10 @@ const numberDisplay = function() {
         button.addEventListener('click', () => {
             if (currentInput === '0') {
                 currentInput = digit;
-                updateNumber();
+                updateDisplay();
             } else {
                 currentInput += digit;
-                updateNumber();
+                updateDisplay();
             }
         })
     })
@@ -70,11 +70,16 @@ const numberDisplay = function() {
 const getOperatorSign = function() {
     operatorButtons.forEach(button => {
         const operator = button.value;
+        // store first number
         button.addEventListener('click', () => {
+            // evaluate any pending operation first
+            computePendingOperation();
+
+            // new operation set up
             firstNumber = numberInput(currentInput);
             currentOperator = operator;
             currentInput = '0';
-            updateNumber();
+            updateDisplay();
         })
     })
 }
@@ -84,16 +89,37 @@ const getEqualSign = function() {
     equalSign.addEventListener('click', () => {
         secondNumber = numberInput(currentInput);
         currentInput = operate(currentOperator, firstNumber, secondNumber);
-        updateNumber();
+        updateDisplay();
     })
 }
 
+const computePendingOperation = function() {
+    if (currentOperator !== '') {
+        // store second number
+        secondNumber = numberInput(currentInput);
+        // perform operation after clicking another operator
+        currentInput = operate(currentOperator, firstNumber, secondNumber);
+        // update display
+        updateDisplay();
+
+        // results after clicking another operator
+        firstNumber = currentInput;
+
+        // reset current operator
+        currentOperator = '';
+    } else {
+        return;
+    }
+}
+
+// convert string numbers to actual numbers
 const numberInput = function(number) {
     const digits = number
     return Number(digits);
 }
 
-const updateNumber = function() {
+// update the display
+const updateDisplay = function() {
     display.textContent = currentInput
 
 }
