@@ -3,6 +3,7 @@ const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
 const display = document.querySelector('.display');
 const equalSign = document.querySelector('.equal');
+const clearButton = document.querySelector('.clear');
 
 // variables of calculator operation
 let firstNumber = 0;
@@ -40,7 +41,7 @@ const operate = function(operator, num1, num2) {
     } else if ( operator === 'x') {
         return multiply(num1, num2);
     } else if ( operator === '/' ) {
-        return divide(num1, num2);
+        return num2 === 0 ? 'Cannot divide by zero press clear to reset' : divide(num1, num2);
     } else {
         return 'Operator not supported';
     }
@@ -125,6 +126,17 @@ const updateDisplay = function() {
     display.textContent = currentInput
 }
 
+const handleClear = function() {
+    clearButton.addEventListener('click', () => {
+        currentInput = '0';
+        firstNumber = 0;
+        secondNumber = 0;
+        currentOperator = '';
+        updateDisplay();
+    })
+}
+
 numberDisplay();
 handleOperator();
 handleEqualSign();
+handleClear();
