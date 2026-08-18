@@ -67,8 +67,9 @@ const numberDisplay = function() {
 }
 
 // get operator sign and store first number
-const getOperatorSign = function() {
+const handleOperator = function() {
     operatorButtons.forEach(button => {
+        // get the value of the button
         const operator = button.value;
         // store first number
         button.addEventListener('click', () => {
@@ -79,17 +80,19 @@ const getOperatorSign = function() {
             firstNumber = numberInput(currentInput);
             currentOperator = operator;
             currentInput = '0';
-            updateDisplay();
+
+            // updateDisplay();
         })
     })
 }
 
 // get equal sign and store second number
-const getEqualSign = function() {
+const handleEqualSign = function() {
     equalSign.addEventListener('click', () => {
-        secondNumber = numberInput(currentInput);
-        currentInput = operate(currentOperator, firstNumber, secondNumber);
-        updateDisplay();
+        
+        // evaluate final operation and update display
+        computePendingOperation();
+
     })
 }
 
@@ -99,12 +102,11 @@ const computePendingOperation = function() {
         secondNumber = numberInput(currentInput);
         // perform operation after clicking another operator
         currentInput = operate(currentOperator, firstNumber, secondNumber);
-        // update display
-        updateDisplay();
-
+        
         // results after clicking another operator
         firstNumber = currentInput;
-
+        
+        updateDisplay();
         // reset current operator
         currentOperator = '';
     } else {
@@ -121,9 +123,8 @@ const numberInput = function(number) {
 // update the display
 const updateDisplay = function() {
     display.textContent = currentInput
-
 }
 
 numberDisplay();
-getOperatorSign();
-getEqualSign();
+handleOperator();
+handleEqualSign();
